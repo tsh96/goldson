@@ -19,6 +19,7 @@ type Option func(t testing.TB, path []string, golden, actual any, options ...Opt
 // `/` is escape character
 func Ignore(pathPattern string) Option {
 	return func(t testing.TB, path []string, golden, actual any, options ...Option) (skip bool) {
+		t.Helper()
 		return MatchPath(pathPattern, path)
 	}
 }
@@ -32,6 +33,7 @@ func Ignore(pathPattern string) Option {
 // `/` is escape character
 func Sort(pathPattern string, less func(a, b any) bool) Option {
 	return func(t testing.TB, path []string, golden, actual any, options ...Option) (skip bool) {
+		t.Helper()
 		if !MatchPath(pathPattern, path) {
 			return false
 		}

@@ -11,6 +11,7 @@ import (
 // TestFromFile auto create the file and write the actual data into it if not exists.
 // if file exists, it call function `TestFromBytes`. See also `TestFromBytes`
 func TestFromFile(t testing.TB, filepath string, actual []byte, options ...Option) {
+	t.Helper()
 	goldenBytes, err := os.ReadFile(filepath)
 	if os.IsNotExist(err) {
 		os.WriteFile(filepath, actual, 0666)
@@ -25,6 +26,7 @@ func TestFromFile(t testing.TB, filepath string, actual []byte, options ...Optio
 // TestFromBytes compare the diff between golden data and actual data.
 // options can change the behavior of the comparison, for example `Ignore`, `Sort`
 func TestFromBytes(t testing.TB, golden, actual []byte, options ...Option) {
+	t.Helper()
 	var goldenJson any
 	if err := json.Unmarshal(golden, &goldenJson); err != nil {
 		t.Fatal(err)
@@ -39,6 +41,7 @@ func TestFromBytes(t testing.TB, golden, actual []byte, options ...Option) {
 }
 
 func Walk(t testing.TB, path []string, golden, actual any, options ...Option) {
+	t.Helper()
 	pathStr := strings.Join(path, ".")
 
 	for _, option := range options {
@@ -91,6 +94,7 @@ func Walk(t testing.TB, path []string, golden, actual any, options ...Option) {
 }
 
 func toJson(t testing.TB, value any) string {
+	t.Helper()
 	result, err := json.Marshal(value)
 	if err != nil {
 		t.Fatal("fail to convert to json:", value)
